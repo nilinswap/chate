@@ -17,7 +17,7 @@ def func():
 		msg =in_st.encode()
 		cli_sock.send(msg)
 		st = cli_sock.recv(1024).decode()
-		print("\t\t st");
+		print("\t\t ", st );
 
 if __name__ == '__main__':
 	func()
