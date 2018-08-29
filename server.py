@@ -8,6 +8,7 @@ class Server:
 		self.adr = ip
 		self.port = 7777
 		self.map = {}
+		self.port_pool = set([])
 		self.cli_listen_port = 8888
 
 	def run(self):
