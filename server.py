@@ -38,6 +38,7 @@ class Server:
 				# INCREASE RELIABLITY HERE		
 			elif lis[0] == 'request':
 				name = lis[1]
+
 				try:
 					ip = self.map[name]
 					new_msg = 'reply ' + ip
@@ -47,14 +48,15 @@ class Server:
 				finally:
 					new_msg = new_msg.encode();
 					adr_tup = addr[0], self.cli_listen_port
-					sendto(new_msg, adr_tup)
+					self.sock.sendto(new_msg, adr_tup)
 			else:
 				print("else")
 				pass
+
+
 def test():
 	server = Server()
 	server.run()
-
 def cli_test():
 	sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 	sock.bind(('', 8888))
