@@ -36,14 +36,24 @@ class Server:
 				del(self.map[name])
 				print(self.map)
 				# INCREASE RELIABLITY HERE		
-			elif lis[0] == 'reply':
+			elif lis[0] == 'request':
 				name = lis[1]
-				new_msg = self.map[name]
-				new_msg = 'reply ' + new_msg
-				new_msg = new_msg.encode();
-				adr_tup = addr[0], self.cli_listen_port
-				sendto(new_msg, adr_tup)
-
+				try:
+					ip = self.map[name]
+					new_msg = 'reply ' + ip
+				except KeyError as e:
+					print(" KeyError for ", name)
+					new_msg = 'error ' + e
+				finally:
+					new_msg = new_msg.encode();
+					adr_tup = addr[0], self.cli_listen_port
+					sendto(new_msg, adr_tup)
+			else:
+				print("else")
+				pass
+def test():
+	server = Server()
+	server.run()
 
 def cli_test():
 	sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -53,7 +63,7 @@ def cli_test():
 	msg = msg.encode()
 	sock.sendto(msg, adr_tup)
 
-	msg = 'reply B'
+	msg = 'request B'
 	msg = msg.encode()
 	sock.sendto(msg, adr_tup)
 	new_msg, addr = sock.recvfrom(1024)
