@@ -4,6 +4,7 @@ import sys
 import socket
 
 def func():
+	print("hi everyone")
 	cli_sock = socket.socket( socket.AF_INET, socket.SOCK_STREAM)
 	port = 6666
 	cli_sock.bind(("", port)) 
