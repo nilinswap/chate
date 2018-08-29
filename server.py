@@ -38,7 +38,6 @@ class Server:
 				# INCREASE RELIABLITY HERE		
 			elif lis[0] == 'request':
 				name = lis[1]
-
 				try:
 					ip = self.map[name]
 					new_msg = 'reply ' + ip

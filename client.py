@@ -64,7 +64,7 @@ def listener():
 		msg = msg.decode()
 		lis = msg.split(' ')
 		other_peer_ip = addr[0]
-		if lis[0] == 'connect': # e.g. connect other_persons_name
+		if lis[0] == 'connect': # more like a 'connect with me' msg e.g. connect other_persons_name
 			other_peer_name = lis[1]
 			tcp_listen_command = 'python3 listen_side_tcp_connect.py ' + other_peer_ip
 			os.system("screen -S "+ other_peer_name + " -d -m " + tcp_listen_command )
@@ -82,6 +82,20 @@ def register_name(service_sock, cli_name):
 	msg = 'register '+cli_name 
 	msg = msg.encode()
 	service_sock.sendto(msg, serv_adr_tup)
+def request_conn(service_sock, cli_name, cli_ip): #	TIME OUT REQUIRED
+	'''
+		registers client's name with its ip in server
+	'''
+	msg = 'connect '+cli_name 
+	msg = msg.encode()
+	adr_tup = cli_ip, 9999
+	service_sock.sendto(msg, adr_tup)
+	new_msg, addr = service_sock.recvfrom(1024)
+	if new_msg.decode() == 'OK':
+		print('request accepted')
+		return True
+	else:
+		return False
 	
 def service():
 	service_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -95,13 +109,24 @@ def service():
 		if command == 'connect': # e.g. connect other_persons_name
 			other_peer_name = lis[1]
 			other_peer_ip = get_ip(service_sock, other_peer_name)
-			tcp_service_command = 'python3 service_side_tcp_connect.py ' + other_peer_ip
-			os.system("screen -S "+ other_peer_name + " -d -m " + tcp_listen_command )
-			#inform_ok(listener_sock, other_peer_ip)
-			print("\t connection established. please move to screen.")
+
+			if request_conn(service_sock, other_peer_name, other_peer_ip):
+				tcp_service_command = 'python3 service_side_tcp_connect.py ' + other_peer_ip
+				os.system("screen -S "+ other_peer_name + " -d -m " + tcp_listen_command )
+				#inform_ok(listener_sock, other_peer_ip)
+				print("\t connection established. please move to screen.")
+			else:
+				print("connection refused")
 
 
 		elif command == 'close':
 			print('close')
 		else:
 			print('else')
+
+def main():
+	thr = threading.Thread(target = listener)
+	thr.start()
+	service()
+if __name__ == '__main__':
+	main()
