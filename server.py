@@ -44,16 +44,19 @@ class Server:
 				adr_tup = addr[0], self.cli_listen_port
 				sendto(new_msg, adr_tup)
 
-def test():
-	server = Server()
-	server.run()
 
 def cli_test():
 	sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 	sock.bind(('', 8888))
 	adr_tup = '172.20.51.18', 7777
-	msg = 'register A'
+	msg = 'register B'
 	msg = msg.encode()
 	sock.sendto(msg, adr_tup)
+
+	msg = 'reply B'
+	msg = msg.encode()
+	sock.sendto(msg, adr_tup)
+	new_msg, addr = sock.recvfrom(1024)
+	print(new_msg, addr)
 if __name__ == '__main__':
-	cli_test()
+	test()
