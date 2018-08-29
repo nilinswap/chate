@@ -10,7 +10,7 @@ def func():
 	cli_adr =  sys.argv[1], port
 	serv_sock.listen(5)
 	#cli_sock.connect(serv_adr)
-	cli_sock = serv_sock.accept()
+	cli_sock, addr = serv_sock.accept()
 
 	while True:
 		in_st = input()
