@@ -69,6 +69,7 @@ def listener():
 			other_peer_name = lis[1]
 			tcp_listen_command = 'python3 listen_side_tcp_connect.py ' + other_peer_ip
 			os.system("screen -S "+ other_peer_name + " -d -m " + tcp_listen_command )
+			os.system("screen -ls")
 			inform_other_ok(listener_sock, other_peer_ip)
 
 
@@ -114,6 +115,7 @@ def service():
 			if request_conn(service_sock, other_peer_name, other_peer_ip):
 				tcp_service_command = 'python3 service_side_tcp_connect.py ' + other_peer_ip
 				os.system("screen -S "+ other_peer_name + " -d -m " + tcp_service_command )
+				os.system("screen -ls")
 				#inform_ok(listener_sock, other_peer_ip)
 				print("\t connection established. please move to screen.")
 			else:
