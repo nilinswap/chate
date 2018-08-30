@@ -3,6 +3,7 @@ import os
 import sys
 import threading
 serv_adr_tup = ('172.20.51.18', 7777)
+#def receive_fun
 def get_ip(sock, name):
 	'''
 		gets ip from name. contacts server for that.
