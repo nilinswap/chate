@@ -39,8 +39,8 @@ def send_fun():
 
 def func():
 	print("hi everyone!")
-	thr1 = threading.Thread(target = receive_fun)
-	thr2 = threading.Thread(target = send_fun)
+	thr1 = threading.Thread(target = receive_func)
+	thr2 = threading.Thread(target = send_func)
 	thr1.start()
 	thr2.start()
 
